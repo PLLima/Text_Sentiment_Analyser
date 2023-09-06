@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-    bst_comp_find = 0;
+    bst_comp_find = 0;                      // Reset comparison counters
     bst_comp_insert = 0;
     
     return 0;
