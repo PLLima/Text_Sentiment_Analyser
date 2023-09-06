@@ -1,7 +1,7 @@
 .PHONY: all clean
 
 # Define required variables
-PROJECT_NAME       ?= Text_Sentiment_Analyser
+PROJECT_NAME       ?= AVL_Text_Sentiment_Analyser
 
 # Define compiler path on Windows
 COMPILER_PATH      ?= C:\MinGW\bin

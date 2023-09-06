@@ -7,18 +7,18 @@
             "args": [
                 "PLATFORM=PLATFORM_DESKTOP",
                 "BUILD_MODE=DEBUG",
-                "PROJECT_NAME=Text_Sentiment_Analyser"
+                "PROJECT_NAME=BST_Text_Sentiment_Analyser"
             ],
             "windows": {
                 "command": "mingw32-make.exe",
                 "args": [
-                    "PROJECT_NAME=Text_Sentiment_Analyser",
+                    "PROJECT_NAME=BST_Text_Sentiment_Analyser",
                     "BUILD_MODE=DEBUG"
                 ]
             },
             "osx": {
                 "args": [
-                    "PROJECT_NAME=Text_Sentiment_Analyser",
+                    "PROJECT_NAME=BST_Text_Sentiment_Analyser",
                     "BUILD_MODE=DEBUG"
                 ]
             },
@@ -33,17 +33,17 @@
             "command": "make",
             "args": [
                 "PLATFORM=PLATFORM_DESKTOP",
-                "PROJECT_NAME=Text_Sentiment_Analyser"
+                "PROJECT_NAME=BST_Text_Sentiment_Analyser"
             ],
             "windows": {
                 "command": "mingw32-make.exe",
                 "args": [
-                    "PROJECT_NAME=Text_Sentiment_Analyser"
+                    "PROJECT_NAME=BST_Text_Sentiment_Analyser"
                 ]
             },
             "osx": {
                 "args": [
-                    "PROJECT_NAME=Text_Sentiment_Analyser"
+                    "PROJECT_NAME=BST_Text_Sentiment_Analyser"
                 ]
             },
             "group": "build",

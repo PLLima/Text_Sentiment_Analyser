@@ -22,8 +22,8 @@ typedef enum
     Pos_Right
 } walkings_t;
 
-unsigned long long avl_comp_find;
-unsigned long long avl_comp_insert;
+extern unsigned long long avl_comp_find;
+extern unsigned long long avl_comp_insert;
 
 void avl_create(avl_t **root);
 

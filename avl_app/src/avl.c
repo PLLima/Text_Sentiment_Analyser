@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-extern unsigned long long avl_comp_find;
-extern unsigned long long avl_comp_insert;
+unsigned long long avl_comp_find = 0;
+unsigned long long avl_comp_insert = 0;
 
 void avl_create(avl_t **root)
 {
