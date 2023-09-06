@@ -2,7 +2,6 @@
 
 # Define required variables
 PROJECT_NAME       ?= Text_Sentiment_Analyser
-EXT                = .exe
 
 # Define compiler path on Windows
 COMPILER_PATH      ?= C:\MinGW\bin
