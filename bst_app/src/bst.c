@@ -1,7 +1,7 @@
 #include "bst.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+#include <string.h>
 
 unsigned long long bst_comp_find = 0;
 unsigned long long bst_comp_insert = 0;
@@ -11,16 +11,24 @@ void bst_create(bst_t **root)
     *root = NULL;
 }
 
-bst_t *bst_find(bst_t *root, data_t key)
+bst_t *bst_find(bst_t *root, char *key)
 {
+    bst_comp_find++;
     if(root)
     {
-        if(root->info == key)
+        bst_comp_find++;
+        if(!strcmp(root->info.word, key))
             return root;
-        else if(root->info > key)
+        else if(strcmp(root->info.word, key) > 0)
+        {
+            bst_comp_find++;
             return bst_find(root->left, key);
+        }
         else
+        {
+            bst_comp_find++;
             return bst_find(root->right, key);
+        }
     }
     else
         return NULL;
@@ -72,13 +80,15 @@ int bst_bf(bst_t *root)
     return max_bf;
 }
 
-bst_t *bst_insert(bst_t *root, data_t key)
+bst_t *bst_insert(bst_t *root, word_bias_t key)
 {
+    bst_comp_insert++;
     if(root)
     {
-        if(key < root->info)
+        bst_comp_insert++;
+        if(strcmp(root->info.word, key.word) > 0)
             root->left = bst_insert(root->left, key);
-        else if(key > root->info)
+        else if(strcmp(root->info.word, key.word) < 0)
             root->right = bst_insert(root->right, key);
     }
     else
@@ -112,10 +122,10 @@ void bst_print(bst_t *root, walking_t walking)
     int node_count = bst_count_nodes(root);
     int bf = bst_bf(root);
     if(node_count == 1)
-        printf("\nA arvore tem 1 no;\n\n");
+        printf("\nThe three has only one node;\n\n");
     else
-        printf("\nA arvore tem %d nos;\n\n", node_count);
-    printf("A arvore tem fator de balanceamento %d;\n\n", bf);
+        printf("\nThe tree has %d nodes;\n\n", node_count);
+    printf("The tree has balancing factor (BF) %d;\n\n", bf);
     switch(walking)
     {
         case Pre_Left:
@@ -153,7 +163,7 @@ void bst_print_pre_left(bst_t *root, int level)
     {
         for(int i = 0; i < level; i++)
             printf("=");
-        printf("%d\n", (int) root->info);
+        printf(" (%f) %s\n", root->info.bias, root->info.word);
         bst_print_pre_left(root->left, level + 1);
         bst_print_pre_left(root->right, level + 1);
     }
@@ -165,7 +175,7 @@ void bst_print_pre_right(bst_t *root, int level)
     {
         for(int i = 0; i < level; i++)
             printf("=");
-        printf("%d\n", (int) root->info);
+        printf(" (%f) %s\n", root->info.bias, root->info.word);
         bst_print_pre_right(root->right, level + 1);
         bst_print_pre_right(root->left, level + 1);
     }
@@ -177,7 +187,7 @@ void bst_print_cen_left(bst_t *root, int level)
         bst_print_cen_left(root->left, level + 1);
         for(int i = 0; i < level; i++)
             printf("=");
-        printf("%d\n", (int) root->info);
+        printf(" (%f) %s\n", root->info.bias, root->info.word);
         bst_print_cen_left(root->right, level + 1);
     }
 }
@@ -188,7 +198,7 @@ void bst_print_cen_right(bst_t *root, int level)
         bst_print_cen_right(root->right, level + 1);
         for(int i = 0; i < level; i++)
             printf("=");
-        printf("%d\n", (int) root->info);
+        printf(" (%f) %s\n", root->info.bias, root->info.word);
         bst_print_cen_right(root->left, level + 1);
     }
 }
@@ -200,7 +210,7 @@ void bst_print_pos_left(bst_t *root, int level)
         bst_print_pos_left(root->right, level + 1);
         for(int i = 0; i < level; i++)
             printf("=");
-        printf("%d\n", (int) root->info);
+        printf(" (%f) %s\n", root->info.bias, root->info.word);
     }
 }
 void bst_print_pos_right(bst_t *root, int level)
@@ -211,7 +221,7 @@ void bst_print_pos_right(bst_t *root, int level)
         bst_print_pos_right(root->left, level + 1);
         for(int i = 0; i < level; i++)
             printf("=");
-        printf("%d\n", (int) root->info);
+        printf(" (%f) %s\n", root->info.bias, root->info.word);
     }
 }
 

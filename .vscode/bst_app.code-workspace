@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "../bst_app"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"typeinfo": "c",
+			"common.h": "c",
+			"auxiliar.h": "c",
+			"logic.h": "c",
+			"files.h": "c",
+			"stdbool.h": "c",
+			"interface.h": "c",
+			"main.h": "c",
+			"time.h": "c",
+			"stdlib.h": "c",
+			"string.h": "c",
+			"ctype.h": "c",
+			"math.h": "c",
+			"stat.h": "c"
+		}
+	}
+}

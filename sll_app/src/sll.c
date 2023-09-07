@@ -6,12 +6,12 @@
 unsigned long long sll_comp_find = 0;
 unsigned long long sll_comp_insert = 0;
 
-sll_t *sll_create(void)
+void sll_create(sll_t **list)
 {
-    return NULL;
+    *list = NULL;
 }
 
-sll_t *sll_insert(sll_t *list, data_t data)
+sll_t *sll_insert(sll_t *list, word_bias_t data)
 {
     sll_t *new;
     sll_t *aux = list;
@@ -20,12 +20,14 @@ sll_t *sll_insert(sll_t *list, data_t data)
     new = (sll_t *) malloc(sizeof(sll_t));
     new->info = data;
 
-    while(aux && new->info.code > aux->info.code)
+    while(aux)
     {
+        sll_comp_insert++;
         previous = aux;
         aux = aux->next;
     }
 
+    sll_comp_insert++;
     new->next = aux;
     if(previous)
         previous->next = new;
@@ -35,12 +37,12 @@ sll_t *sll_insert(sll_t *list, data_t data)
     return list;
 }
 
-sll_t *sll_remove(sll_t *list, char *name)
+sll_t *sll_remove(sll_t *list, char *key)
 {
     sll_t *previous = NULL;
     sll_t *aux = list;
 
-    while (aux && strcmp(aux->info.name, name))
+    while (aux && strcmp(aux->info.word, key))
     {
         previous = aux;
         aux = aux->next;
@@ -59,12 +61,14 @@ sll_t *sll_remove(sll_t *list, char *name)
     return list;
 }
 
-sll_t *sll_find(sll_t *list, char *name)
+sll_t *sll_find(sll_t *list, char *key)
 {
     sll_t *aux = NULL;
 
+    sll_comp_find++;
     if(list)
-        for(aux = list; aux && strcmp(aux->info.name, name); aux = aux->next);
+        for(aux = list; aux && strcmp(aux->info.word, key); aux = aux->next)
+            sll_comp_find++;
 
     return aux;
 }
@@ -72,12 +76,11 @@ sll_t *sll_find(sll_t *list, char *name)
 void sll_print(sll_t *data)
 {
     if(data)
-        printf("\n[%d] %s - R$ %.2f\n",
-               data->info.code,
-               data->info.name,
-               data->info.price);
+        printf("\n(%f) %s\n",
+               data->info.bias,
+               data->info.word);
     else
-        printf("\nProduto nao encontrado.\n");
+        printf("\nWord not found.\n");
 }
 
 void sll_print_all(sll_t *list)
@@ -85,19 +88,18 @@ void sll_print_all(sll_t *list)
     sll_t *aux = list;
     if (aux)
     {
-        printf("\nTabela de Produtos:\n"
-           "\n[Codigo] Nome - Preco\n"
+        printf("\nLexicon:\n"
+           "\n((Bias) Word)\n"
            "\n");
         for (aux = list; aux; aux = aux->next)
         {
-            printf("[%d] %s - R$ %.2f\n",
-                   aux->info.code,
-                   aux->info.name,
-                   aux->info.price);
+            printf("\n(%f) %s\n",
+                  aux->info.bias,
+                  aux->info.word);
         }
     }
     else
-        printf("\nLista Vazia.\n");
+        printf("\nEmpty list.\n");
 }
 
 sll_t *sll_destroy(sll_t *list)
