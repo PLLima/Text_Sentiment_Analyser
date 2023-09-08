@@ -89,13 +89,16 @@ void sll_print_all(sll_t *list)
     if (aux)
     {
         printf("\nLexicon:\n"
-           "\n((Bias) Word)\n"
+           "\n(Item - (Bias) Word)\n"
            "\n");
+        int index = 1;
         for (aux = list; aux; aux = aux->next)
         {
-            printf("\n(%.2f) %s\n",
+            printf("\n%d - (%.2f) %s\n",
+                  index,
                   aux->info.bias,
                   aux->info.word);
+            index++;
         }
     }
     else
