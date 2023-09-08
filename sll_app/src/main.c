@@ -37,11 +37,11 @@ int main(int argc, char *argv[])
 
     clock_t start;
     clock_t end;
-    float app_time;
-    float insert_time;
-    float find_time;
+    double app_time = 0;
+    double insert_time = 0;
+    double find_time = 0;
 
-    app_time = (float) clock();                                                     // Starts clock for measuring app's total time
+    app_time = (double) clock();                                                    // Starts clock for measuring app's total time
 
     input_args = validate_input_arguments(argc);                                    // Validate input arguments
     if(input_args == Invalid)                                                       // If there was any error, return it
@@ -62,7 +62,6 @@ int main(int argc, char *argv[])
 
     sll_create(&lexicon_words);                                                     // Initialize ADT to store the lexicon's words
 
-    start = clock();
     while(fgets(fileline, MAX_FILELINE + 1, lexicon_handle))                        // Read each of the lexicon's lines until EOF
     {
         token = strtok(fileline, lexicon_delimiters);                               // Read line token by token
@@ -70,19 +69,18 @@ int main(int argc, char *argv[])
         token = strtok(NULL, lexicon_delimiters);
         data.bias = strtof(token, &error_char);                                     // The second token is the word's bias
 
+        start = clock();
         lexicon_words = sll_insert(lexicon_words, data);                            // Inserts each word bias to the ADT
+        end = clock();
+        insert_time += (double) (end - start) * 1000 / CLOCKS_PER_SEC;              // Updates total insert time
     }
     fclose(lexicon_handle);                                                         // Close lexicon file
-    end = clock();
-
-    insert_time = (float) (end - start) / CLOCKS_PER_SEC * 1000;                    // Calculates total insert time
 
 //    sll_print_all(lexicon_words);  // FOR TESTING
 
     output_handle = fopen(argv[Output], "w");                                       // Create output file
     if(output_handle)
     {
-        start = clock();
         while(fgets(fileline, MAX_FILELINE + 1, sentences_handle))                  // Read each of the sentences until EOF
         {
             sentence_bias = 0;                                                      // Reset sentence's bias
@@ -92,7 +90,10 @@ int main(int argc, char *argv[])
             token = strtok(fileline, sentences_delimiters);                         // Read line token by token
             while(token)
             {
+                start = clock();
                 node = sll_find(lexicon_words, (char *) _strlwr(token));            // Looks for the token's bias
+                end = clock();
+                find_time += (double) (end - start) * 1000 / CLOCKS_PER_SEC;        // Updates total find time
                 if(node)                                                            // If found, adds its bias to the sentence's
                     sentence_bias += node->info.bias;
 
@@ -102,9 +103,6 @@ int main(int argc, char *argv[])
             fprintf(output_handle, "%+4.2f %s", sentence_bias, fileline_copy);      // Prints results in the output file
         }
         fclose(output_handle);                                                      // Close output file
-        end = clock();
-
-        find_time = (float) (end - start) / CLOCKS_PER_SEC * 1000;                  // Calculates total find time
     }
     else                                                                            // Warns user if output file wasn't created
         printf("\nERROR: Impossible to create output file.\n\n");
@@ -113,15 +111,15 @@ int main(int argc, char *argv[])
 
     lexicon_words = sll_destroy(lexicon_words);                                     // Free ADT's memory
 
-    app_time = (((float) clock()) - app_time) / CLOCKS_PER_SEC * 1000;              // Calculates app's total time
+    app_time = (((double) clock()) - app_time) * 1000 / CLOCKS_PER_SEC;             // Calculates app's total time
 
     performance_handle = fopen(performance_filename, "w");                          // Creates performance file
     fprintf(performance_handle, "SLL Application Performance:\n\n"                  // Prints results in the performance file
                                 "Number of Comparisons during Insertion: %llu;\n"
                                 "Number of Comparisons during Search: %llu;\n\n"
-                                "Total Application Time: %.3f ms;\n"
-                                "Total Insertion Time: %.3f ms;\n"
-                                "Total Search Time: %.3f ms.",
+                                "Total Application Time: %.6lf ms;\n"
+                                "Total Insertion Time: %.6lf ms;\n"
+                                "Total Search Time: %.6lf ms.",
                                 sll_comp_insert, sll_comp_find, app_time, insert_time, find_time);
     fclose(performance_handle);                                                     // Closes performance file
 
