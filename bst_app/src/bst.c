@@ -17,9 +17,9 @@ bst_t *bst_find(bst_t *root, char *key)
     if(root)
     {
         bst_comp_find++;
-        if(!strcmp(root->info.word, key))
+        if(!strncmp(root->info.word, key, MAX_WORD + 1))
             return root;
-        else if(strcmp(root->info.word, key) > 0)
+        else if(strncmp(root->info.word, key, MAX_WORD + 1) > 0)
         {
             bst_comp_find++;
             return bst_find(root->left, key);
@@ -86,9 +86,9 @@ bst_t *bst_insert(bst_t *root, word_bias_t key)
     if(root)
     {
         bst_comp_insert++;
-        if(strcmp(root->info.word, key.word) > 0)
+        if(strncmp(root->info.word, key.word, MAX_WORD + 1) > 0)
             root->left = bst_insert(root->left, key);
-        else if(strcmp(root->info.word, key.word) < 0)
+        else if(strncmp(root->info.word, key.word, MAX_WORD + 1) < 0)
             root->right = bst_insert(root->right, key);
     }
     else

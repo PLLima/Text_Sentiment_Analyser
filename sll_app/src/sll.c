@@ -42,7 +42,7 @@ sll_t *sll_remove(sll_t *list, char *key)
     sll_t *previous = NULL;
     sll_t *aux = list;
 
-    while (aux && strcmp(aux->info.word, key))
+    while (aux && strncmp(aux->info.word, key, MAX_WORD + 1))
     {
         previous = aux;
         aux = aux->next;
@@ -67,7 +67,7 @@ sll_t *sll_find(sll_t *list, char *key)
 
     sll_comp_find++;
     if(list)
-        for(aux = list; aux && strcmp(aux->info.word, key); aux = aux->next)
+        for(aux = list; aux && strncmp(aux->info.word, key, MAX_WORD + 1); aux = aux->next)
             sll_comp_find++;
 
     return aux;
@@ -76,7 +76,7 @@ sll_t *sll_find(sll_t *list, char *key)
 void sll_print(sll_t *data)
 {
     if(data)
-        printf("\n(%f) %s\n",
+        printf("\n(%.2f) %s\n",
                data->info.bias,
                data->info.word);
     else
@@ -93,7 +93,7 @@ void sll_print_all(sll_t *list)
            "\n");
         for (aux = list; aux; aux = aux->next)
         {
-            printf("\n(%f) %s\n",
+            printf("\n(%.2f) %s\n",
                   aux->info.bias,
                   aux->info.word);
         }

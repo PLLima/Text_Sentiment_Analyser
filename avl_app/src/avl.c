@@ -17,9 +17,9 @@ avl_t *avl_find(avl_t *root, char *key)
     if(root)
     {
         avl_comp_find++;
-        if(!strcmp(root->info.word, key))
+        if(!strncmp(root->info.word, key, MAX_WORD + 1))
             return root;
-        else if(strcmp(root->info.word, key) > 0)
+        else if(strncmp(root->info.word, key, MAX_WORD + 1) > 0)
         {
             avl_comp_find++;
             return avl_find(root->left, key);
@@ -143,7 +143,7 @@ avl_t *avl_insert_int(avl_t *root, word_bias_t key, int *success)
         root->bf = 0;
         *success = 1;
     }
-    else if(strcmp(root->info.word, key.word) > 0)
+    else if(strncmp(root->info.word, key.word, MAX_WORD + 1) > 0)
     {
         avl_comp_insert += 2;
         root->left = avl_insert_int(root->left, key, success);
