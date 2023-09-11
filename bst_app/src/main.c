@@ -9,7 +9,7 @@
 
 int main(int argc, char *argv[])
 {
-    const char lexicon_delimiters[] = {"\n\t"};                                    // Initialize local constants
+    const char lexicon_delimiters[] = {" \n\t"};                                    // Initialize local constants
     const char sentences_delimiters[] = {" ,.&*%\?!;:/@'\"$#=><()][}{\n\t"};
     const char performance_filename[] = "bst_app_performance.txt";
 
