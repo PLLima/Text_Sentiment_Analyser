@@ -134,7 +134,55 @@ avl_t* unbalanced_right(avl_t *root, int *success)
 avl_t *avl_insert_int(avl_t *root, word_bias_t key, int *success)
 {
     avl_comp_insert++;
-    if(!root)
+    if(root)
+    {
+        avl_comp_insert += 2;
+        if(strncmp(root->info.word, key.word, MAX_WORD + 1) > 0)
+        {
+            root->left = avl_insert_int(root->left, key, success);
+            if(*success)
+            {
+                avl_comp_insert++;
+                switch(root->bf)
+                {
+                    case -1:
+                        root->bf = 0;
+                        *success = 0;
+                        break;
+                    case 0:
+                        root->bf = 1;
+                        break;
+                    case 1:
+                        root = unbalanced_left(root, success);
+                        break;
+                }
+            }
+        }
+        else if(strncmp(root->info.word, key.word, MAX_WORD + 1) < 0)
+        {
+            root->right = avl_insert_int(root->right, key, success);
+            if(*success)
+            {
+                avl_comp_insert++;
+                switch(root->bf)
+                {
+                    case 1:
+                        root->bf = 0;
+                        *success = 0;
+                        break;
+                    case 0:
+                        root->bf = -1;
+                        break;
+                    case -1:
+                        root = unbalanced_right(root, success);
+                        break;
+                }
+            }
+        }
+        else
+            *success = 0;
+    }
+    else
     {
         root = (avl_t*) malloc(sizeof(avl_t));
         root->info = key;
@@ -143,50 +191,7 @@ avl_t *avl_insert_int(avl_t *root, word_bias_t key, int *success)
         root->bf = 0;
         *success = 1;
     }
-    else if(strncmp(root->info.word, key.word, MAX_WORD + 1) > 0)
-    {
-        avl_comp_insert += 2;
-        root->left = avl_insert_int(root->left, key, success);
-        if(*success)
-        {
-            avl_comp_insert++;
-            switch(root->bf)
-            {
-                case -1:
-                    root->bf = 0;
-                    *success = 0;
-                    break;
-                case 0:
-                    root->bf = 1;
-                    break;
-                case 1:
-                    root = unbalanced_left(root, success);
-                    break;
-            }
-        }
-    }
-    else
-    {
-        avl_comp_insert += 2;
-        root->right = avl_insert_int(root->right, key, success);
-        if(*success)
-        {
-            avl_comp_insert++;
-            switch(root->bf)
-            {
-                case 1:
-                    root->bf = 0;
-                    *success = 0;
-                    break;
-                case 0:
-                    root->bf = -1;
-                    break;
-                case -1:
-                    root = unbalanced_right(root, success);
-                    break;
-            }
-        }
-    }
+
     return root;
 }
 
